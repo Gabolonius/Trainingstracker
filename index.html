@@ -15,14 +15,14 @@
 <style>
 :root{
   --bg:#EFF1EE; --surface:#FFFFFF; --ink:#1E2328; --muted:#5F666D; --line:#D6DAD5;
-  --a:#C3313B; --b:#2C64AE; --ok:#2D7D52; --warn:#B4231B; --warn-bg:#FBE9E7;
+  --a:#C3313B; --b:#2C64AE; --ok:#2D7D52; --warn:#B4231B; --warn-bg:#FBE9E7; --note-bg:#FFF4D6; --note:#7A5A00;
   --unit:var(--a);
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root{
     --bg:#15181B; --surface:#1F2327; --ink:#E7EAEC; --muted:#9AA1A8; --line:#353B41;
-    --a:#E5626A; --b:#6C9BE0; --ok:#5BBF86; --warn:#FF8A80; --warn-bg:#3A1F1D;
+    --a:#E5626A; --b:#6C9BE0; --ok:#5BBF86; --warn:#FF8A80; --warn-bg:#3A1F1D; --note-bg:#3A3220; --note:#F2D27A;
     color-scheme:dark;
   }
 }
@@ -30,66 +30,113 @@ body.unit-B{--unit:var(--b)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
   font-family:ui-rounded,"SF Pro Rounded","Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
-  font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;padding-bottom:130px}
+  font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;padding-bottom:140px}
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--unit);outline-offset:2px}
 .wrap{max-width:560px;margin:0 auto;padding:16px}
-nav{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:20px}
-nav button{flex:1;border:0;background:none;color:var(--muted);font-weight:700;padding:9px;border-radius:999px;cursor:pointer}
-nav button[aria-current="true"]{background:var(--ink);color:var(--bg)}
+nav.main{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:20px}
+nav.main button{flex:1;border:0;background:none;color:var(--muted);font-weight:700;padding:9px;border-radius:999px;cursor:pointer}
+nav.main button[aria-current="true"]{background:var(--ink);color:var(--bg)}
 h1{font-size:1.6rem;line-height:1.15;margin:0}
 h2{font-size:1.15rem;margin:0 0 2px}
+h3{font-size:1rem;margin:14px 0 4px}
 .meta{color:var(--muted);font-size:.88rem}
 .small{color:var(--muted);font-size:.9rem;margin-top:20px}
 .status{color:var(--muted);font-size:.88rem;min-height:1.2em;margin:8px 0 0}
 
-/* Start */
 .hero{padding:4px 0 12px}
 .hero .kicker{margin:0;color:var(--muted);font-weight:600}
 .hero .letter{font-size:clamp(150px,44vw,220px);font-weight:800;line-height:.82;color:var(--unit);letter-spacing:-.05em;margin:4px 0 10px}
 .hero p{margin:0 0 4px;color:var(--muted)}
 
-.btn{display:flex;align-items:center;justify-content:center;border:0;border-radius:14px;padding:14px 20px;font-weight:700;cursor:pointer;background:var(--unit);color:#fff;min-height:50px}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:14px;padding:14px 20px;font-weight:700;cursor:pointer;background:var(--unit);color:#fff;min-height:50px;text-decoration:none}
 .btn.wide{width:100%}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);min-height:44px;padding:10px 14px}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);min-height:46px;padding:10px 14px}
+.btn.okbtn{background:var(--ok)}
+.btn[disabled]{opacity:.4}
 .link{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:12px 4px;display:block}
 .link.danger{color:var(--warn)}
 
 .field{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0}
-.field.col{flex-direction:column;align-items:stretch;gap:6px}
 .field > span{font-weight:600}
 .seg{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
 .seg button{border:0;background:transparent;padding:10px 16px;min-height:44px;cursor:pointer;font-weight:600}
 .seg button + button{border-left:1px solid var(--line)}
 .seg button[aria-pressed="true"]{background:var(--unit);color:#fff}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.scale button{border:0;background:transparent;padding:8px 2px;min-height:52px;cursor:pointer;font-weight:600;font-size:.78rem;line-height:1.15}
+.scale button + button{border-left:1px solid var(--line)}
+.scale button b{display:block;font-size:1.05rem}
+.scale button[aria-pressed="true"]{background:var(--unit);color:#fff}
+.scalefield{margin:16px 0}
+.scalefield > span{display:block;font-weight:600;margin-bottom:6px}
 
-/* Session */
-.sess-head{display:flex;gap:14px;align-items:center;margin-bottom:8px}
-.sess-head .letter-sm{font-size:68px;font-weight:800;line-height:.9;color:var(--unit);letter-spacing:-.04em}
-.painbtn{width:100%;border:1.5px solid var(--warn);color:var(--warn);background:transparent;border-radius:12px;padding:11px;font-weight:700;cursor:pointer;margin:6px 0}
-.alert{background:var(--warn-bg);color:var(--warn);border-radius:16px;padding:16px;margin:12px 0;font-weight:600}
-.group{margin:26px 0 8px}
-.group .sub{color:var(--muted);font-size:.9rem;margin:0 0 10px}
-.row{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:8px}
-.row.done{border-left-color:var(--ok)}
-.row .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-.row .name{font-weight:700}
-.last{font-size:.86rem;color:var(--muted);margin-top:3px}
+/* Session-Kopf */
+.sess-head{display:flex;gap:14px;align-items:center;margin-bottom:6px}
+.sess-head .letter-sm{font-size:60px;font-weight:800;line-height:.9;color:var(--unit);letter-spacing:-.04em}
+.sess-head .grow{flex:1;min-width:0}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:8px 0}
+.flags{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.flag{border:1.5px solid var(--warn);color:var(--warn);background:transparent;border-radius:12px;padding:10px 8px;font-weight:700;cursor:pointer;font-size:.92rem}
+.flag[aria-pressed="true"]{background:var(--warn);color:#fff}
+.flag.knee{border-color:var(--note);color:var(--note)}
+.flag.knee[aria-pressed="true"]{background:var(--note);color:var(--bg)}
+.alert{background:var(--warn-bg);color:var(--warn);border-radius:16px;padding:14px 16px;margin:10px 0;font-weight:600}
+.notebox{background:var(--note-bg);color:var(--note);border-radius:16px;padding:12px 16px;margin:10px 0;font-weight:600;font-size:.92rem}
+
+/* Fortschritt Seiten */
+.progress{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0 4px}
+.progress i{display:block;height:100%;background:var(--unit)}
+.stepinfo{display:flex;justify-content:space-between;color:var(--muted);font-size:.88rem;font-weight:600}
+
+/* Übungskarte */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}
+.excard{border-left:6px solid var(--line)}
+.excard.done{border-left-color:var(--ok)}
+.excard .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.excard .name{font-weight:800;font-size:1.25rem;line-height:1.2}
+.page .excard .name{font-size:1.6rem}
+.tag{display:inline-block;font-size:.8rem;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--bg);color:var(--muted);border:1px solid var(--line);white-space:nowrap}
+.last{font-size:.88rem;color:var(--muted);margin-top:4px}
 .up{color:var(--ok);font-weight:700}
-.ctrl{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
-.stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.stepper button{width:46px;height:46px;border:0;background:transparent;font-size:1.35rem;cursor:pointer}
-.stepper output{min-width:42px;text-align:center;font-weight:800;font-size:1.3rem;font-variant-numeric:tabular-nums}
-.loadwrap{display:flex;align-items:center;gap:6px}
-.load{width:84px;height:46px;border:1px solid var(--line);border-radius:12px;background:transparent;padding:0 10px}
-.variant{margin-top:10px;width:100%;height:44px;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 10px}
-.check{margin-left:auto;width:50px;height:50px;border-radius:50%;border:2px solid var(--line);background:transparent;cursor:pointer;font-size:1.3rem;font-weight:800;color:var(--muted)}
-.row.done .check{background:var(--ok);border-color:var(--ok);color:#fff}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;margin:16px 0}
+.ctrlrow{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.ctrlrow .lbl{font-size:.85rem;color:var(--muted);min-width:64px}
+.stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.stepper button{width:48px;height:48px;border:0;background:transparent;font-size:1.4rem;cursor:pointer}
+.stepper output,.stepper input{min-width:46px;width:64px;text-align:center;font-weight:800;font-size:1.3rem;font-variant-numeric:tabular-nums;border:0;background:transparent;padding:0}
+.stepper input:focus{outline:none}
+.txtload{width:140px;height:48px;border:1px solid var(--line);border-radius:12px;background:transparent;padding:0 10px}
+select.sel{flex:1;min-width:160px;height:46px;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 10px}
+.checks{display:flex;gap:8px;flex-wrap:wrap}
+.chk{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;font-weight:600;background:var(--surface)}
+.chk input{width:20px;height:20px;accent-color:var(--unit)}
+.check{margin-left:auto;width:52px;height:52px;border-radius:50%;border:2px solid var(--line);background:transparent;cursor:pointer;font-size:1.3rem;font-weight:800;color:var(--muted)}
+.check[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
+.setrow{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.setrow .lbl{font-weight:700;min-width:64px}
+.timerbtn{margin-top:12px}
+
+/* Infos */
+details.info{margin-top:14px;border-top:1px solid var(--line);padding-top:6px}
+details.info summary{cursor:pointer;font-weight:700;padding:8px 0;list-style:none}
+details.info summary::-webkit-details-marker{display:none}
+details.info summary::after{content:" ▾";color:var(--muted)}
+details.info[open] summary::after{content:" ▴"}
+.info p{margin:4px 0 8px}
+.info ul{margin:4px 0 8px;padding-left:20px}
+.info li{margin:3px 0}
+.vids{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.vid{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-decoration:none;color:var(--ink);font-weight:600;background:var(--bg)}
+.vid .play{width:30px;height:30px;border-radius:50%;background:var(--unit);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex:none}
+.vid .meta{display:block;font-weight:400}
+
+.pagenav{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:14px}
+.group{margin:26px 0 4px}
+.group .sub{color:var(--muted);font-size:.9rem;margin:0}
 textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px;background:transparent;resize:vertical}
 .warntext{color:var(--warn);font-weight:600}
 
-/* History */
+/* Verlauf */
 .hist-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
 details.hist summary{display:flex;gap:14px;align-items:center;cursor:pointer;list-style:none}
 details.hist summary::-webkit-details-marker{display:none}
@@ -99,32 +146,29 @@ details.hist summary::-webkit-details-marker{display:none}
 .note{color:var(--muted);font-style:italic}
 .empty{padding:30px 0}
 .empty p{color:var(--muted)}
-
-/* Sicherung */
-.backup h2{margin-bottom:4px}
 .backup .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .backup .btns .btn{flex:1}
 .hint{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--unit);border-radius:14px;padding:12px 14px;margin:0 0 16px;font-size:.92rem}
 .hint.bad{border-left-color:var(--warn);color:var(--warn);font-weight:600}
 input[type=file]{display:none}
-.card .field{flex-direction:column;align-items:stretch;gap:6px}
-.card .seg button{flex:1;padding:10px 8px}
 
 /* Timer */
 .timer{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--bg);
-  padding:14px 16px calc(14px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px}
+  padding:14px 16px calc(14px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;z-index:10}
 .timer[hidden]{display:none}
 .timer .tinfo{flex:1;min-width:0}
-.timer .t{font-size:2rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
-.timer .tl{font-size:.85rem;opacity:.8}
+.timer .t{font-size:2.2rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.timer .tl{font-size:.88rem;opacity:.85}
 .timer button{background:transparent;border:1px solid currentColor;border-radius:10px;padding:9px 12px;cursor:pointer;color:inherit;font-weight:600}
 .tbar{position:absolute;top:0;left:0;right:0;height:5px}
 #tfill{display:block;height:100%;width:0;background:var(--unit)}
+.timer.work{background:var(--unit);color:#fff}
+.timer.work #tfill{background:#fff}
 </style>
 </head>
 <body class="unit-A">
 <div class="wrap">
-  <nav aria-label="Bereiche">
+  <nav class="main" aria-label="Bereiche">
     <button data-act="view" data-v="today">Training</button>
     <button data-act="view" data-v="history">Verlauf</button>
   </nav>
@@ -135,41 +179,106 @@ input[type=file]{display:none}
 
 <script>
 const KEY = 'physio-tracker-v1';
-let data = { sessions: [], active: null };
+let data = { sessions: [], active: null, lastBackup: null, prefs: {} };
 let view = 'today';
 let startRounds = 2;
 let startLoc = 'home';
-let timer = null, tick = null, actx = null;
-let armed = null;          // zweistufiges Bestätigen (Löschen/Verwerfen)
+let timer = null, tick = null, actx = null, wakeLock = null;
+let armed = null;
 let exportText = null;
 const openIds = new Set();
 
+/* ---------- Übungen ---------- */
+const PT = 'Physitrack';
 const EX = {
-  legpress: { name:'Beinpresse', machine:true, load:'kg' },
-  squat:    { tools:true, name:'Squats', hint:'Band um die Knie, Gewicht vor dem Körper', load:'kg' },
-  rdl:      { tools:true, name:'RDL', hint:'Kreuzheben mit gestreckten Beinen', load:'kg', perSideWith:['Kurzhantel'], defLoad:'4', defTool:'Kurzhantel', home:{ load:'10', tool:'Kettlebell' } },
-  calf:     { tools:true, name:'Wadenheben', load:'kg', variants:['beidbeinig','beidbeinig hoch, einbeinig runter','einbeinig'] },
-  pallof:   { name:'Pallof Press', side:true, load:'Band/kg', text:true },
-  foot:     { name:'Fuß nach außen gegen Theraband', side:true, load:'Band', text:true },
-  stand:    { name:'Einbeinstand', side:true, time:true, variants:['Augen offen','Augen zu','weiche Unterlage'] },
-  legcurl:  { name:'Leg Curls', machine:true, load:'kg' },
-  lunge:    { tools:true, name:'Ausfallschritte nach vorne', side:true, load:'kg' },
-  bridge:   { tools:true, name:'Bridges', hint:'Becken heben', load:'kg', variants:['beidbeinig','einbeinig'] },
-  lateral:  { tools:true, name:'Seitheben', load:'kg', defLoad:'3' },
-  kneeext:  { name:'Knee Extension', machine:true, load:'kg' }
+  legpress: { name:'Beinpresse', machine:true, load:'kg',
+    how:'Rücken an die Lehne, Füße hüftbreit in der Mitte der Platte. Langsam beugen, dann wieder wegdrücken.',
+    cues:['Knie zeigen in Richtung Zehen und fallen nicht nach innen','Knie oben nicht ganz durchdrücken','Unterer Rücken bleibt an der Lehne, Gesäß hebt nicht ab','Langsam zurück, nicht fallen lassen'],
+    feel:'Vordere Oberschenkel (Quadrizeps) und Gesäß',
+    videos:[{t:'Beinpresse am Gerät', u:'https://us.physitrack.com/home-exercise-video/leg-press-on-machine'}] },
+  squat: { tools:true, name:'Squats', hint:'Band um die Knie, Gewicht vor dem Körper', load:'kg',
+    how:'Band knapp über den Knien, Füße etwa schulterbreit. Gewicht nah vor der Brust halten, Hüfte nach hinten schieben, als würdest du dich auf einen Stuhl setzen, dann wieder aufstehen.',
+    cues:['Knie aktiv gegen das Band nach außen drücken, sie zeigen über die Zehen','Fersen bleiben am Boden','Oberkörper aufrecht, Gewicht bleibt nah am Körper','So tief, wie es sauber und schmerzfrei geht'],
+    feel:'Vordere Oberschenkel und Gesäß, durch das Band auch seitlich am Gesäß',
+    videos:[{t:'Squat mit Miniband um die Knie', u:'https://us.physitrack.com/home-exercise-video/squat-with-mini-band-around-knees'},
+            {t:'Goblet-Squat: Gewicht vor der Brust', u:'https://us.physitrack.com/home-exercise-video/goblet-squat---weights'}] },
+  rdl: { tools:true, name:'RDL', hint:'Kreuzheben mit gestreckten Beinen', load:'kg', perSideWith:['Kurzhantel'], defLoad:'4', defTool:'Kurzhantel', home:{ load:'10', tool:'Kettlebell' },
+    how:'Hüftbreit stehen, Knie leicht gebeugt und so lassen. Hüfte nach hinten schieben und den Oberkörper nach vorne neigen, das Gewicht gleitet nah an den Beinen nach unten. Dann Hüfte nach vorne schieben und aufrichten.',
+    cues:['Rücken bleibt gerade, kein Rundrücken','Die Bewegung kommt aus der Hüfte, nicht aus den Knien','Nur so tief, wie der Rücken gerade bleibt, meist etwa bis unters Knie','Oben Gesäß anspannen, nicht ins Hohlkreuz lehnen'],
+    feel:'Rückseite der Oberschenkel und Gesäß, nicht im unteren Rücken',
+    videos:[{t:'Kreuzheben mit gestreckten Beinen, Kettlebell', u:'https://us.physitrack.com/home-exercise-video/kettlebell-stiff-leg-deadlift'}] },
+  calf: { tools:true, name:'Wadenheben', load:'kg', variants:['beidbeinig','beidbeinig hoch, einbeinig runter','einbeinig'],
+    how:'Aufrecht stehen, mit einer Hand an der Wand festhalten. Langsam auf die Zehenballen hochdrücken, oben kurz halten und in 2–3 Sekunden wieder absenken.',
+    cues:['Ganz nach oben kommen, die ganze Bewegung nutzen','Gewicht über Großzehe und zweiter Zehe, das Sprunggelenk kippt nicht nach außen','Absenken langsamer als hochdrücken','Knie gestreckt, aber nicht durchgedrückt'],
+    feel:'Wade',
+    videosBy:{
+      'beidbeinig':[{t:'Wadenheben beidbeinig', u:'https://ie.physitrack.com/home-exercise-video/bilateral-straight-leg-calf-raise'}],
+      'beidbeinig hoch, einbeinig runter':[{t:'Beidbeinig hoch, einbeinig runter', u:'https://us.physitrack.com/home-exercise-video/eccentric-calf-exercises-on-floor'}],
+      'einbeinig':[{t:'Wadenheben einbeinig an der Wand', u:'https://us.physitrack.com/home-exercise-video/dynamic-calf-raise-standing'}] } },
+  pallof: { name:'Pallof Press', side:true, load:'Band/kg', text:true,
+    how:'Band auf Brust- bis Bauchnabelhöhe befestigen und seitlich dazu stehen. Griff mit beiden Händen an die Brust, Arme gerade nach vorne strecken, kurz halten und zurück.',
+    cues:['Oberkörper und Becken drehen nicht zum Band hin','Knie leicht gebeugt, Bauch und Gesäß angespannt','Vorne 1–2 Sekunden halten, dort ist es am schwersten','Abstand so wählen, dass das Band auch am Anfang Spannung hat'],
+    feel:'Seitliche Bauchmuskeln und der ganze Rumpf',
+    videos:[{t:'Pallof Press mit Band', u:'https://www.physitrack.com/de/exercise-library/how-to-perform-the-pallof-press-exercise'}] },
+  foot: { name:'Fuß nach außen gegen Theraband', side:true, load:'Band', text:true,
+    how:'Im Sitzen das Band um den Vorfuß legen und gegen die Zugrichtung nach außen spannen. Den Fuß aus dem Sprunggelenk nach außen drehen und langsam zurückführen.',
+    cues:['Nur das Sprunggelenk bewegt sich, Unterschenkel und Knie bleiben ruhig','Die Fußaußenkante führt die Bewegung','Langsam zurück, das Band nicht zurückschnalzen lassen'],
+    feel:'Außenseite des Unterschenkels (Wadenbeinmuskeln)',
+    videos:[{t:'Fuß gegen Band nach außen, im Sitzen', u:'https://us.physitrack.com/home-exercise-video/resisted-ankle-eversion'}] },
+  stand: { name:'Einbeinstand', side:true, time:true, mods:['Augen zu','weiche Unterlage'],
+    how:'Auf einem Bein stehen, das andere leicht anheben. Wand oder Stuhl in Reichweite, vor allem mit geschlossenen Augen. Der Timer läuft erst links, dann rechts.',
+    cues:['Standbein-Knie ganz leicht gebeugt, nicht durchgedrückt','Becken bleibt waagrecht','Fuß belastet Ferse, Groß- und Kleinzehenballen','Wackeln ist normal, das ist das Training'],
+    feel:'Fuß, Sprunggelenk und seitliche Hüfte',
+    videosBy:{
+      'base':[{t:'Einbeinstand, erst offen, dann Augen zu', u:'https://ca.physitrack.com/home-exercise-video/single-leg-balance-with-eyes-closed---alternating-legs'}],
+      'Augen zu':[{t:'Einbeinstand mit geschlossenen Augen', u:'https://uk.physitrack.com/home-exercise-video/single-leg-stance-eyes-closed'}],
+      'weiche Unterlage':[{t:'Einbeinstand auf weicher Unterlage', u:'https://us.physitrack.com/home-exercise-video/sls-on-foam-balance-mat'}] } },
+  legcurl: { name:'Leg Curls', machine:true, load:'kg',
+    how:'Gerät so einstellen, dass das Kniegelenk auf Höhe der Drehachse liegt und das Polster knapp über der Ferse sitzt. Fersen Richtung Gesäß ziehen, langsam zurück.',
+    cues:['Becken bleibt auf dem Polster bzw. an der Lehne','Kein Schwung','Langsam zurück, nicht fallen lassen'],
+    feel:'Rückseite der Oberschenkel',
+    videos:[{t:'Leg Curls im Sitzen am Gerät', u:'https://uk.physitrack.com/home-exercise-video/seated-hamstring-curl---machine'}] },
+  lunge: { tools:true, name:'Ausfallschritte nach vorne', side:true, load:'kg',
+    how:'Großen Schritt nach vorne, beide Knie beugen, bis das hintere Knie knapp über dem Boden ist. Mit dem vorderen Fuß kräftig zurück in den Stand drücken.',
+    cues:['Vorderes Knie zeigt über den Fuß, fällt nicht nach innen','Oberkörper aufrecht','Schritt lang genug, dass die vordere Ferse belastet bleibt','Kontrolliert landen, nicht in den Schritt fallen'],
+    feel:'Vordere Oberschenkel und Gesäß des vorderen Beins',
+    videos:[{t:'Ausfallschritte nach vorne', u:'https://ca.physitrack.com/home-exercise-video/alternating-forward-lunges---bodyweight'},
+            {t:'Ausfallschritte mit Kurzhanteln', u:'https://ca.physitrack.com/home-exercise-video/forward-lunge-with-dumbbells'}] },
+  bridge: { tools:true, name:'Bridges', hint:'Becken heben', load:'kg', variants:['beidbeinig','einbeinig'],
+    how:'Auf dem Rücken liegen, Füße hüftbreit aufgestellt, Fersen nicht zu weit vom Gesäß. Gesäß anspannen und das Becken heben, bis Schultern, Hüfte und Knie eine Linie bilden. Langsam absenken.',
+    cues:['Oben Gesäß fest anspannen, nicht ins Hohlkreuz drücken','Knie bleiben hüftbreit','Einbeinig: Becken bleibt waagrecht und kippt nicht ab'],
+    feel:'Gesäß und Rückseite der Oberschenkel, nicht im unteren Rücken',
+    videosBy:{
+      'beidbeinig':[{t:'Bridge beidbeinig', u:'https://us.physitrack.com/home-exercise-video/glute-bridge-on-floor'}],
+      'einbeinig':[{t:'Bridge einbeinig', u:'https://us.physitrack.com/home-exercise-video/single-leg-glute-bridge'}] } },
+  lateral: { tools:true, name:'Seitheben', hint:'Arme seitlich heben', load:'kg', defLoad:'3', defTool:'Kurzhantel',
+    how:'Aufrecht stehen, Hanteln seitlich neben dem Körper. Arme mit leicht gebeugten Ellbogen seitlich bis auf Schulterhöhe heben und langsam wieder senken.',
+    cues:['Schultern bleiben tief, nicht zu den Ohren ziehen','Kein Schwung aus dem Oberkörper','Nur bis Schulterhöhe','Absenken langsam'],
+    feel:'Seitliche Schulter (Deltamuskel)',
+    videos:[{t:'Seitheben mit Kurzhanteln', u:'https://ie.physitrack.com/home-exercise-video/dumbbell-lateral-raise'}] },
+  kneeext: { name:'Knee Extension', machine:true, load:'kg',
+    how:'Gerät so einstellen, dass das Kniegelenk auf Höhe der Drehachse liegt und das Polster vorne über dem Sprunggelenk. Beine strecken, kurz halten, langsam zurück.',
+    cues:['Rücken an der Lehne, Griffe festhalten','Oben kurz halten','Langsam zurück, nicht fallen lassen'],
+    feel:'Vordere Oberschenkel',
+    videos:[{t:'Knee Extension am Gerät', u:'https://us.physitrack.com/home-exercise-video/knee-extension---machine---version-2'}] }
 };
+const WARMUP = { how:'Locker treten mit leichtem Widerstand, sodass du dich noch gut unterhalten könntest. Gegen Ende darf es etwas zügiger werden.', feel:'Beine warm, Puls leicht erhöht' };
 const UNITS = {
   A: { pre:['legpress'], circuit:['squat','rdl','calf','pallof','foot','stand'], post:['legcurl'] },
   B: { pre:[], circuit:['lunge','bridge','lateral','calf','foot','stand'], post:['kneeext'] }
 };
-const allEx = u => [...UNITS[u].pre, ...UNITS[u].circuit, ...UNITS[u].post];
 const TOOLS = ['Kurzhantel','Kettlebell','Langhantel','ohne Gewicht'];
-// Gewichtseinheit: bei zwei Kurzhanteln pro Seite, sonst gesamt
-const loadUnit = (id, e) => (EX[id].perSideWith || []).includes(e && e.tool) ? 'kg/Seite' : (EX[id].load || '');
+const FEEL = ['sehr schlecht','schlecht','mittel','gut','sehr gut'];
+const PAIN = ['keine','leicht','mittel','stark','sehr stark'];
 const LOC = { home:'Daheim', gym:'Studio' };
 const LOC_AT = { home:'daheim', gym:'im Studio' };
-const locOf = s => s.loc || 'gym';   // ältere Einheiten ohne Ort zählen als Studio
+const DEFAULT_REPS = 10;
+
+const allEx = u => [...UNITS[u].pre, ...UNITS[u].circuit, ...UNITS[u].post];
+const locOf = s => s.loc || 'gym';
 const exFor = (u, loc) => loc === 'gym' ? allEx(u) : UNITS[u].circuit;
+const loadUnit = (id, e) => (EX[id].perSideWith || []).includes(e && e.tool) ? 'kg/Seite' : (EX[id].load || '');
+const numericLoad = id => EX[id].load && !EX[id].text;
 
 /* ---------- Hilfsfunktionen ---------- */
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -177,10 +286,15 @@ const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6
 const fmtDate = iso => new Date(iso).toLocaleDateString('de-AT', { weekday:'short', day:'numeric', month:'numeric', year:'2-digit' });
 const isSide = (id, e) => EX[id].side || /einbeinig/.test(e.variant || '');
 const unitTxt = id => EX[id].time ? 'Sek.' : 'Wdh.';
-
+const parseNum = v => { const n = parseFloat(String(v || '').replace(',', '.')); return isNaN(n) ? null : n; };
+const fmtNum = n => Number.isInteger(n) ? String(n) : String(Math.round(n * 10) / 10).replace('.', ',');
 function setStatus(t){ document.getElementById('status').textContent = t; }
 
-// In Claude: Artifact-Speicher. Als eigene Web-App: Browser-Speicher (localStorage).
+// Einbeinstand: Zusätze als Liste, Variante als Text (für Verlauf und ältere Daten)
+function standVariant(mods){ return mods && mods.length ? mods.join(' + ') : 'Augen offen'; }
+function modsFromVariant(v){ return EX.stand.mods.filter(m => (v || '').includes(m)); }
+
+/* ---------- Speicher ---------- */
 const inClaude = !!(window.storage && typeof window.storage.get === 'function');
 let storageOk = true;
 const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -195,16 +309,15 @@ async function storeSet(v){
   localStorage.setItem(KEY, v);
 }
 function normalize(d){
-  return { sessions: Array.isArray(d.sessions) ? d.sessions : [], active: d.active || null, lastBackup: d.lastBackup || null };
+  return { sessions: Array.isArray(d.sessions) ? d.sessions : [], active: d.active || null, lastBackup: d.lastBackup || null, prefs: d.prefs || {} };
 }
 async function loadData(){
-  try{ const v = await storeGet(); if (v) data = normalize(JSON.parse(v)); }
-  catch(e){ /* noch keine Daten */ }
+  try{ const v = await storeGet(); if (v) data = normalize(JSON.parse(v)); }catch(e){}
   if (!inClaude){
-    try{ localStorage.setItem(KEY + '-test', '1'); localStorage.removeItem(KEY + '-test'); }
-    catch(e){ storageOk = false; }
+    try{ localStorage.setItem(KEY + '-test', '1'); localStorage.removeItem(KEY + '-test'); }catch(e){ storageOk = false; }
     try{ if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
   }
+  if (data.active) upgradeSession(data.active);
 }
 let saveT;
 function save(){
@@ -214,6 +327,13 @@ function save(){
     catch(e){ storageOk = false; setStatus('Speichern fehlgeschlagen. Einträge bleiben nur, solange die Seite offen ist. Mach ein Backup.'); }
   }, 300);
 }
+// Ältere offene Einheiten an den neuen Stand anpassen
+function upgradeSession(s){
+  if (s.page == null) s.page = 0;
+  if (s.warmupMin == null) s.warmupMin = 10;
+  const st = s.entries.stand;
+  if (st && !st.mods) st.mods = modsFromVariant(st.variant);
+}
 
 /* ---------- Backup ---------- */
 function backupFileName(){
@@ -221,7 +341,7 @@ function backupFileName(){
   return `training-backup-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
 }
 async function exportBackup(){
-  const json = JSON.stringify({ app:'physio-tracker', version:1, exported:new Date().toISOString(), sessions:data.sessions, active:data.active }, null, 2);
+  const json = JSON.stringify({ app:'physio-tracker', version:2, exported:new Date().toISOString(), sessions:data.sessions, active:data.active, prefs:data.prefs }, null, 2);
   const name = backupFileName();
   const markDone = () => { data.lastBackup = new Date().toISOString(); save(); render(); };
   try{
@@ -231,9 +351,7 @@ async function exportBackup(){
       setStatus('Backup geteilt. Am besten in iCloud Drive oder Dateien sichern.');
       markDone(); return;
     }
-  }catch(e){
-    if (e && e.name === 'AbortError'){ setStatus('Backup abgebrochen.'); return; }
-  }
+  }catch(e){ if (e && e.name === 'AbortError'){ setStatus('Backup abgebrochen.'); return; } }
   try{
     const url = URL.createObjectURL(new Blob([json], { type:'application/json' }));
     const a = document.createElement('a'); a.href = url; a.download = name;
@@ -241,9 +359,7 @@ async function exportBackup(){
     setTimeout(() => URL.revokeObjectURL(url), 4000);
     setStatus('Backup-Datei erstellt: ' + name);
     markDone();
-  }catch(e){
-    setStatus('Download nicht möglich. Bitte den Text unter „Für Lele zusammenfassen“ sichern.');
-  }
+  }catch(e){ setStatus('Download nicht möglich. Bitte den Text unter „Für Lele zusammenfassen“ sichern.'); }
 }
 function importBackup(file){
   const r = new FileReader();
@@ -254,7 +370,7 @@ function importBackup(file){
     const known = new Set(data.sessions.map(s => s.id));
     const fresh = d.sessions.filter(s => s && s.id && s.unit && s.entries && !known.has(s.id));
     data.sessions = [...data.sessions, ...fresh].sort((a, b) => new Date(a.date) - new Date(b.date));
-    if (!data.active && d.active) data.active = d.active;
+    if (!data.active && d.active){ data.active = d.active; upgradeSession(data.active); }
     save(); render();
     setStatus(fresh.length ? `${fresh.length} ${fresh.length===1?'Einheit':'Einheiten'} wiederhergestellt.` : 'Alle Einheiten aus dem Backup waren schon vorhanden.');
   };
@@ -268,10 +384,7 @@ function backupCard(){
   const where = inClaude ? 'Die Daten liegen in deinem Claude-Konto.' : 'Die Daten liegen nur auf diesem Gerät.';
   return `<section class="card backup"><h2>Sicherung</h2>
     <p class="meta">${where} ${when} Ein Backup ist eine Datei mit allen Einheiten, die du z. B. in iCloud Drive ablegst. Beim Wiederherstellen werden fehlende Einheiten ergänzt, nichts wird überschrieben.</p>
-    <div class="btns">
-      <button class="btn" data-act="backup">Backup erstellen</button>
-      <button class="btn ghost" data-act="restore">Backup wiederherstellen</button>
-    </div>
+    <div class="btns"><button class="btn" data-act="backup">Backup erstellen</button><button class="btn ghost" data-act="restore">Backup wiederherstellen</button></div>
     <input type="file" id="restoreFile" accept="application/json,.json"></section>`;
 }
 function storageHint(){
@@ -282,17 +395,20 @@ function storageHint(){
   return '';
 }
 
-function lastEntry(id, excludeId, loc){
+/* ---------- Werte aus früheren Einheiten ---------- */
+function findPrev(id, { loc, excludeId, needDone, needSetup } = {}){
   for (let i = data.sessions.length - 1; i >= 0; i--){
     const s = data.sessions[i];
     if (s.id === excludeId) continue;
     if (loc && locOf(s) !== loc) continue;
     const e = s.entries[id];
-    if (e && e.sets.some(x => x.done)) return { e, s };
+    if (!e) continue;
+    if (needDone && !e.sets.some(x => x.done)) continue;
+    if (needSetup && !(e.load || e.tool || e.variant || (e.mods && e.mods.length))) continue;
+    return { e, s };
   }
   return null;
 }
-// "In allen Runden sauber 12" -> steigern
 function reachedTop(id, e){
   if (EX[id].time) return false;
   const done = e.sets.filter(x => x.done);
@@ -311,23 +427,32 @@ function weekCount(){
 function newSession(unit, rounds, loc){
   const entries = {};
   exFor(unit, loc).forEach(id => {
-    const ex = EX[id], prev = lastEntry(id, null, loc), anyPrev = lastEntry(id);
-    let reps = ex.time ? 30 : 8, variant = ex.variants ? ex.variants[0] : '', load = ex.defLoad || '', tool = ex.defTool || '';
+    const ex = EX[id];
+    let reps = ex.time ? 30 : DEFAULT_REPS;
+    let variant = ex.variants ? ex.variants[0] : '';
+    let mods = [];
+    let load = ex.defLoad || '', tool = ex.defTool || '';
     if (loc === 'home' && ex.home){ load = ex.home.load; tool = ex.home.tool; }
-    // Variante (Schwierigkeit) ortsunabhängig, Gewicht und Wiederholungen pro Ort
-    if (anyPrev && anyPrev.e.variant) variant = anyPrev.e.variant;
-    if (prev){
-      const p = prev.e;
-      load = p.load ?? load;
-      tool = p.tool || '';
-      const d = p.sets.filter(x => x.done);
+    // Variante/Zusätze: zuletzt verwendet, egal wo
+    const anyPrev = findPrev(id, { needSetup:true });
+    if (anyPrev){ variant = anyPrev.e.variant || variant; if (ex.mods) mods = anyPrev.e.mods || modsFromVariant(anyPrev.e.variant); }
+    // Gewicht und Gerät: zuletzt an diesem Ort eingestellt, auch ohne abgehakten Satz
+    const setupPrev = findPrev(id, { loc, needSetup:true });
+    if (setupPrev){ if (setupPrev.e.load) load = setupPrev.e.load; if (setupPrev.e.tool) tool = setupPrev.e.tool; }
+    // Wiederholungen: zuletzt geschafft an diesem Ort
+    const donePrev = findPrev(id, { loc, needDone:true });
+    if (donePrev){
+      const d = donePrev.e.sets.filter(x => x.done);
       if (d.length) reps = d[0].reps;
-      if (reachedTop(id, p)) reps = 6;
+      if (reachedTop(id, donePrev.e)) reps = 6;
     }
+    if (ex.mods) variant = standVariant(mods);
     const n = ex.machine ? 3 : rounds;
-    entries[id] = { variant, load, tool, sets: Array.from({ length:n }, () => ({ reps, done:false })) };
+    entries[id] = { variant, mods: ex.mods ? mods : undefined, load, tool, sets: Array.from({ length:n }, () => ({ reps, done:false })) };
   });
-  return { id:uid(), unit, loc, date:new Date().toISOString(), rounds, warmup:false, entries, feel:'', pain:'', note:'', stopped:false };
+  const lastWarm = [...data.sessions].reverse().find(s => s.warmupMin);
+  return { id:uid(), unit, loc, date:new Date().toISOString(), rounds, warmup:false, warmupMin: lastWarm ? lastWarm.warmupMin : 10,
+           entries, feel:'', pain:'', painKnee:'', kneeFlag:false, note:'', stopped:false, page:0 };
 }
 
 function setRounds(s, n){
@@ -337,68 +462,209 @@ function setRounds(s, n){
     while (sets.length < n) sets.push({ reps: sets[sets.length - 1].reps, done:false });
     while (sets.length > n && !sets[sets.length - 1].done) sets.pop();
   });
+  s.page = Math.min(s.page, steps(s).length - 1);
 }
 
-/* ---------- Pausen-Timer ---------- */
+// Ablauf als Liste von Schritten (eine Seite je Schritt)
+function steps(s){
+  const u = UNITS[s.unit], gym = locOf(s) === 'gym', out = [{ type:'warmup' }];
+  if (gym) u.pre.forEach(id => out.push({ type:'ex', id, machine:true }));
+  for (let r = 0; r < s.rounds; r++) u.circuit.forEach((id, k) => out.push({ type:'ex', id, round:r, first:k === 0 }));
+  if (gym) u.post.forEach(id => out.push({ type:'ex', id, machine:true, post:true }));
+  out.push({ type:'finish' });
+  return out;
+}
+
+/* ---------- Timer ---------- */
 function restFor(s, id, i){
   if (EX[id].machine) return { sec:120, label:'Pause bis zum nächsten Satz' };
   const c = UNITS[s.unit].circuit;
   if (c.indexOf(id) === c.length - 1){
-    return i < s.rounds - 1 ? { sec:180, label:'Pause vor der nächsten Runde (2–4 Min.)' }
-                            : (locOf(s) === 'gym' ? { sec:150, label:'Pause vor den Geräten' } : null);
+    if (i < s.rounds - 1) return { sec:180, label:'Pause vor der nächsten Runde (2–4 Min.)' };
+    return locOf(s) === 'gym' ? { sec:150, label:'Pause vor den Geräten' } : null;
   }
   return { sec:150, label:'Pause bis zur nächsten Übung (2–3 Min.)' };
 }
-function startTimer(r){
-  timer = { end: Date.now() + r.sec * 1000, total: r.sec, label: r.label, rang:false };
+async function keepAwake(on){
+  try{
+    if (on && !wakeLock && navigator.wakeLock) wakeLock = await navigator.wakeLock.request('screen');
+    if (!on && wakeLock){ await wakeLock.release(); wakeLock = null; }
+  }catch(e){ wakeLock = null; }
+}
+function runTimer(phases, kind, onDone){
+  timer = { phases, idx:0, kind, onDone, end: Date.now() + phases[0].sec * 1000, total: phases[0].sec, rang:false };
   clearInterval(tick); tick = setInterval(updTimer, 250);
+  keepAwake(true);
   renderTimer();
 }
-function stopTimer(){ timer = null; clearInterval(tick); renderTimer(); }
+function startRest(r){ if (r) runTimer([{ sec:r.sec, label:r.label }], 'rest', null); else stopTimer(); }
+function stopTimer(){ timer = null; clearInterval(tick); keepAwake(false); renderTimer(); }
 function renderTimer(){
   const el = document.getElementById('timer');
-  if (!timer){ el.hidden = true; el.innerHTML = ''; return; }
+  if (!timer){ el.hidden = true; el.innerHTML = ''; el.className = 'timer'; return; }
   el.hidden = false;
+  el.className = 'timer' + (timer.kind === 'work' ? ' work' : '');
+  const ph = timer.phases[timer.idx];
   el.innerHTML = `<div class="tbar"><i id="tfill"></i></div>
-    <div class="tinfo"><div class="t" id="tval"></div><div class="tl">${esc(timer.label)}</div></div>
-    <button data-act="tplus">+30 s</button><button data-act="tstop">Weiter</button>`;
+    <div class="tinfo"><div class="t" id="tval"></div><div class="tl">${esc(ph.label)}${timer.phases.length > 1 ? ` (${timer.idx+1}/${timer.phases.length})` : ''}</div></div>
+    ${timer.kind === 'rest' ? '<button data-act="tplus">+30 s</button><button data-act="tstop">Weiter</button>' : '<button data-act="tstop">Abbrechen</button>'}`;
   updTimer();
 }
 function updTimer(){
   if (!timer) return;
   const left = Math.max(0, Math.round((timer.end - Date.now()) / 1000));
   const tv = document.getElementById('tval'), f = document.getElementById('tfill');
-  if (tv) tv.textContent = left > 0 ? `${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}` : 'Weiter geht’s';
+  if (tv) tv.textContent = left > 0 ? `${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}` : (timer.kind === 'rest' ? 'Weiter geht’s' : 'Fertig');
   if (f) f.style.width = (100 * (1 - left / timer.total)) + '%';
-  if (left === 0 && !timer.rang){ timer.rang = true; ding(); }
+  if (left === 0 && !timer.rang){
+    timer.rang = true; ding();
+    if (timer.idx < timer.phases.length - 1){
+      timer.idx++; const ph = timer.phases[timer.idx];
+      timer.end = Date.now() + ph.sec * 1000; timer.total = ph.sec; timer.rang = false;
+      renderTimer();
+    } else if (timer.kind === 'work'){
+      const cb = timer.onDone; timer = null; clearInterval(tick); renderTimer();
+      if (cb) cb();
+    } else keepAwake(false);
+  }
 }
 function ding(){
   try{
     if (navigator.vibrate) navigator.vibrate([200,100,200]);
     if (!actx) return;
-    const o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime;
-    o.frequency.value = 880;
-    g.gain.setValueAtTime(.001, t);
-    g.gain.exponentialRampToValueAtTime(.3, t + .02);
-    g.gain.exponentialRampToValueAtTime(.001, t + .6);
-    o.connect(g).connect(actx.destination); o.start(); o.stop(t + .65);
+    [0, .25].forEach(off => {
+      const o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime + off;
+      o.frequency.value = 880;
+      g.gain.setValueAtTime(.001, t); g.gain.exponentialRampToValueAtTime(.35, t + .02); g.gain.exponentialRampToValueAtTime(.001, t + .22);
+      o.connect(g).connect(actx.destination); o.start(t); o.stop(t + .25);
+    });
   }catch(e){}
 }
 
-/* ---------- Rendering ---------- */
+/* ---------- Bausteine ---------- */
+function videosFor(id, e){
+  const ex = EX[id];
+  if (ex.videos) return ex.videos;
+  if (id === 'stand'){
+    const m = e.mods || [];
+    return m.length ? m.flatMap(k => ex.videosBy[k] || []) : ex.videosBy.base;
+  }
+  return ex.videosBy[e.variant] || Object.values(ex.videosBy)[0];
+}
+function infoBlock(id, e, open){
+  const ex = EX[id];
+  const vids = videosFor(id, e).map(v => `<a class="vid" href="${v.u}" target="_blank" rel="noopener"><span class="play">▶</span><span>${esc(v.t)}<span class="meta">Video bei ${PT}, auf Englisch</span></span></a>`).join('');
+  return `<details class="info" ${open ? 'open' : ''}><summary>Ausführung, worauf achten, Video</summary>
+    <p>${esc(ex.how)}</p>
+    <h3>Worauf achten</h3><ul>${ex.cues.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
+    <h3>Spüren solltest du es</h3><p>${esc(ex.feel)}</p>
+    <div class="vids">${vids}</div>
+    <p class="meta">Allgemeine Hinweise. Wenn Lele dir etwas anderes gesagt hat, gilt ihre Anleitung.</p>
+  </details>`;
+}
+function lastInfo(s, id){
+  const ex = EX[id], prev = findPrev(id, { loc:locOf(s), excludeId:s.id, needDone:true });
+  if (!prev) return '';
+  const p = prev.e, reps = p.sets.filter(x => x.done).map(x => x.reps).join(', ');
+  let h = `<div class="last">Letztes Mal ${LOC_AT[locOf(s)]}: ${reps} ${unitTxt(id)}${p.load ? `, ${esc(p.load)} ${esc(loadUnit(id, p))}` : ''}${p.tool ? ` (${esc(p.tool)})` : ''}${p.variant ? `, ${esc(p.variant)}` : ''}</div>`;
+  if (reachedTop(id, p)) h += `<div class="last up">Überall 12 geschafft: mehr Gewicht oder schwierigere Variante, wieder ab 6 Wdh.</div>`;
+  return h;
+}
+function repStepper(id, i, val){
+  return `<div class="stepper"><button data-act="dec" data-ex="${id}" data-i="${i}" aria-label="weniger">−</button><output>${val}</output><button data-act="inc" data-ex="${id}" data-i="${i}" aria-label="mehr">+</button></div>`;
+}
+// Einstellungen der Übung: Gewicht, womit, Variante. Gilt für alle Runden gemeinsam.
+function setupControls(id, e){
+  const ex = EX[id]; let h = '';
+  if (ex.load){
+    if (numericLoad(id)){
+      h += `<div class="ctrlrow"><span class="lbl">Gewicht</span>
+        <div class="stepper"><button data-act="ldec" data-ex="${id}" aria-label="Gewicht weniger">−</button>
+        <input inputmode="decimal" data-field="load" data-ex="${id}" value="${esc(e.load)}" placeholder="–" aria-label="Gewicht ${esc(ex.name)}">
+        <button data-act="linc" data-ex="${id}" aria-label="Gewicht mehr">+</button></div><span class="meta">${esc(loadUnit(id, e))}</span></div>`;
+    } else {
+      h += `<div class="ctrlrow"><span class="lbl">${esc(ex.load)}</span><input class="txtload" data-field="load" data-ex="${id}" value="${esc(e.load)}" placeholder="z. B. grün" aria-label="${esc(ex.load)} ${esc(ex.name)}"></div>`;
+    }
+  }
+  if (ex.tools){
+    h += `<div class="ctrlrow"><span class="lbl">Womit</span><select class="sel" data-field="tool" data-ex="${id}" aria-label="Womit, ${esc(ex.name)}">
+      <option value="" ${!e.tool?'selected':''}>bitte wählen</option>${TOOLS.map(t => `<option ${t===e.tool?'selected':''}>${t}</option>`).join('')}</select></div>`;
+  }
+  if (ex.variants){
+    h += `<div class="ctrlrow"><span class="lbl">Variante</span><select class="sel" data-field="variant" data-ex="${id}" aria-label="Variante ${esc(ex.name)}">
+      ${ex.variants.map(v => `<option ${v===e.variant?'selected':''}>${esc(v)}</option>`).join('')}</select></div>`;
+  }
+  if (ex.mods){
+    h += `<div class="ctrlrow"><span class="lbl">Variante</span><div class="checks">${ex.mods.map(m =>
+      `<label class="chk"><input type="checkbox" data-field="mod" data-ex="${id}" value="${esc(m)}" ${(e.mods||[]).includes(m)?'checked':''}>${esc(m)}</label>`).join('')}</div></div>`;
+  }
+  return h;
+}
+
+function exCard(s, st, page){
+  const id = st.id, ex = EX[id], e = s.entries[id];
+  const side = isSide(id, e) ? 'pro Seite' : '';
+  const label = st.machine ? (st.post ? 'Am Gerät, zum Schluss' : 'Am Gerät, zuerst') : `Runde ${st.round+1} von ${s.rounds}`;
+  const anyDone = st.machine ? e.sets.some(x => x.done) : e.sets[st.round].done;
+  let h = `<div class="card excard ${anyDone ? 'done' : ''}">
+    <div class="top"><span class="tag">${label}</span><span class="meta">${side}</span></div>
+    <div class="name" style="margin-top:6px">${esc(ex.name)}</div>
+    ${ex.hint ? `<div class="meta">${esc(ex.hint)}</div>` : ''}
+    ${lastInfo(s, id)}
+    ${setupControls(id, e)}`;
+  if (st.machine){
+    h += `<p class="meta" style="margin:12px 0 0">2–3 Sätze, ca. 2 Min. Pause dazwischen</p>`;
+    h += e.sets.map((set, i) => `<div class="setrow"><span class="lbl">Satz ${i+1}${i===2?'<br><span class="meta">optional</span>':''}</span>
+      ${repStepper(id, i, set.reps)}<span class="meta">Wdh.</span>
+      <button class="check" data-act="done" data-ex="${id}" data-i="${i}" aria-pressed="${set.done}" aria-label="Satz ${i+1} erledigt">✓</button></div>`).join('');
+  } else {
+    const set = e.sets[st.round];
+    h += `<div class="setrow"><span class="lbl">${ex.time ? 'Dauer' : 'Wdh.'}</span>${repStepper(id, st.round, set.reps)}<span class="meta">${ex.time ? 'Sek. pro Seite' : (side ? 'pro Seite' : '')}</span>
+      ${page ? '' : `<button class="check" data-act="done" data-ex="${id}" data-i="${st.round}" aria-pressed="${set.done}" aria-label="${esc(ex.name)} erledigt">✓</button>`}</div>`;
+    if (ex.time) h += `<button class="btn ghost wide timerbtn" data-act="worktimer" data-ex="${id}" data-i="${st.round}">Timer starten: ${set.reps} s links, dann rechts</button>`;
+  }
+  h += infoBlock(id, e, page && (st.machine || st.round === 0));
+  h += `</div>`;
+  return h;
+}
+
+function warmupCard(s, page){
+  return `<div class="card excard ${s.warmup ? 'done' : ''}">
+    <div class="top"><span class="tag">Vorher</span></div>
+    <div class="name" style="margin-top:6px">Aufwärmen</div>
+    <div class="meta">5–10 Minuten, z. B. am Rad oder Ergometer</div>
+    <div class="setrow"><span class="lbl">Dauer</span>
+      <div class="stepper"><button data-act="wdec" aria-label="kürzer">−</button><output>${s.warmupMin}</output><button data-act="winc" aria-label="länger">+</button></div><span class="meta">Min.</span>
+      ${page ? '' : `<button class="check" data-act="warmup" aria-pressed="${s.warmup}" aria-label="Aufwärmen erledigt">✓</button>`}</div>
+    <button class="btn ghost wide timerbtn" data-act="warmtimer">Timer starten: ${s.warmupMin} Minuten</button>
+    <details class="info" ${page ? 'open' : ''}><summary>Worauf achten</summary><p>${esc(WARMUP.how)}</p><h3>Spüren solltest du</h3><p>${esc(WARMUP.feel)}</p></details>
+  </div>`;
+}
+
+function finishCard(s){
+  const scale = (act, val, labels, num) => `<div class="scale">${labels.map((l, k) => `<button data-act="${act}" data-v="${l}" aria-pressed="${val===l}">${num ? `<b>${k+1}</b>` : ''}${l}</button>`).join('')}</div>`;
+  return `<section class="card"><h2>Einheit abschließen</h2>
+    <div class="scalefield"><span>Tagesverfassung</span>${scale('feel', s.feel, FEEL, true)}</div>
+    <div class="scalefield"><span>Schmerzen Sprunggelenk</span>${scale('painlvl', s.pain, PAIN)}</div>
+    ${['mittel','stark','sehr stark','deutlich'].includes(s.pain) && !s.stopped ? `<p class="warntext">Bei Schmerzen im Sprunggelenk: aufhören und Lele Bescheid geben.</p>` : ''}
+    <div class="scalefield"><span>Schmerzen Knie</span>${scale('kneelvl', s.painKnee, PAIN)}</div>
+    <label class="scalefield" style="display:block"><span>Notiz, z. B. für Lele</span><textarea data-field="note" rows="3">${esc(s.note)}</textarea></label>
+    <button class="btn wide okbtn" data-act="finish">Einheit speichern</button>
+    <button class="link danger" data-act="discard">${armed === 'discard' ? 'Wirklich verwerfen? Nochmal tippen.' : 'Einheit verwerfen'}</button>
+  </section>`;
+}
+
+/* ---------- Ansichten ---------- */
 function render(){
   const a = data.active;
   document.body.className = 'unit-' + (a ? a.unit : nextUnit());
-  document.querySelectorAll('nav button').forEach(b => b.setAttribute('aria-current', String(b.dataset.v === view)));
-  document.getElementById('main').innerHTML =
-    view === 'history' ? renderHistory() : (a ? renderSession(a) : renderStart());
+  document.querySelectorAll('nav.main button').forEach(b => b.setAttribute('aria-current', String(b.dataset.v === view)));
+  document.getElementById('main').innerHTML = view === 'history' ? renderHistory() : (a ? renderSession(a) : renderStart());
   renderTimer();
 }
-
 function roundsSeg(cur){
   return `<div class="seg">${[2,3].map(n => `<button data-act="rounds" data-n="${n}" aria-pressed="${cur===n}">${n}</button>`).join('')}</div>`;
 }
-
 function renderStart(){
   const u = nextUnit(), o = u === 'A' ? 'B' : 'A', w = weekCount();
   const last = data.sessions[data.sessions.length - 1];
@@ -415,70 +681,71 @@ function renderStart(){
     <p class="small">Saubere Ausführung geht vor Gewicht. Bei Schmerzen im Sprunggelenk aufhören und Lele Bescheid geben.</p>`;
 }
 
-function group(title, sub, inner){
-  return `<section class="group"><h2>${title}</h2><p class="sub">${sub}</p>${inner}</section>`;
-}
-
-function row(s, id, i, first, label){
-  const ex = EX[id], e = s.entries[id], set = e.sets[i];
-  let info = '';
-  if (first){
-    if (ex.hint) info += `<div class="meta">${esc(ex.hint)}</div>`;
-    const prev = lastEntry(id, s.id, locOf(s));
-    if (prev){
-      const p = prev.e, reps = p.sets.filter(x => x.done).map(x => x.reps).join(', ');
-      info += `<div class="last">Letztes Mal ${LOC_AT[locOf(s)]}: ${reps} ${unitTxt(id)}${p.load ? `, ${esc(p.load)} ${esc(loadUnit(id, p))}` : ''}${p.tool ? ` (${esc(p.tool)})` : ''}${p.variant ? `, ${esc(p.variant)}` : ''}</div>`;
-      if (reachedTop(id, p)) info += `<div class="last up">Überall 12 geschafft: mehr Gewicht oder schwierigere Variante, wieder ab 6 Wdh.</div>`;
-    }
-  }
-  const right = [isSide(id, e) ? 'pro Seite' : '', !first && e.tool ? esc(e.tool) : '', !first && e.variant ? esc(e.variant) : ''].filter(Boolean).join(', ');
-  return `<div class="row ${set.done ? 'done' : ''}">
-    <div class="top"><span class="name">${esc(ex.name)}${label ? ` <span class="meta">${label}</span>` : ''}</span><span class="meta">${right}</span></div>
-    ${info}
-    <div class="ctrl">
-      <div class="stepper">
-        <button data-act="dec" data-ex="${id}" data-i="${i}" aria-label="weniger">−</button>
-        <output>${set.reps}</output>
-        <button data-act="inc" data-ex="${id}" data-i="${i}" aria-label="mehr">+</button>
-      </div><span class="meta">${unitTxt(id)}</span>
-      ${ex.load ? `<label class="loadwrap"><input class="load" inputmode="${ex.text ? 'text' : 'decimal'}" data-field="load" data-ex="${id}" value="${esc(e.load)}" placeholder="–" aria-label="Gewicht oder Band, ${esc(ex.name)}"><span class="meta">${esc(loadUnit(id, e))}</span></label>` : ''}
-      <button class="check" data-act="done" data-ex="${id}" data-i="${i}" aria-pressed="${set.done}" aria-label="${esc(ex.name)} erledigt">✓</button>
+function sessionHead(s){
+  const mode = data.prefs.view || 'pages';
+  let h = `<header class="sess-head"><div class="letter-sm" aria-hidden="true">${s.unit}</div>
+    <div class="grow"><h1>Einheit ${s.unit}</h1><p class="meta" style="margin:0">${fmtDate(s.date)}, ${LOC[locOf(s)]}</p></div></header>
+    <div class="toolbar">
+      <div class="seg" aria-label="Ansicht"><button data-act="mode" data-v="pages" aria-pressed="${mode==='pages'}">Seiten</button><button data-act="mode" data-v="list" aria-pressed="${mode==='list'}">Liste</button></div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="meta">Runden</span>${roundsSeg(s.rounds)}</div>
     </div>
-    ${ex.tools && first ? `<select class="variant" data-field="tool" data-ex="${id}" aria-label="Womit, ${esc(ex.name)}"><option value="" ${!e.tool?'selected':''}>Womit? (Kurzhantel, Kettlebell …)</option>${TOOLS.map(t => `<option ${t===e.tool?'selected':''}>${t}</option>`).join('')}</select>` : ''}
-    ${ex.variants && first ? `<select class="variant" data-field="variant" data-ex="${id}" aria-label="Variante ${esc(ex.name)}">${ex.variants.map(v => `<option ${v===e.variant?'selected':''}>${esc(v)}</option>`).join('')}</select>` : ''}
-  </div>`;
+    <div class="flags">
+      <button class="flag" data-act="pain" aria-pressed="${s.stopped}">Schmerzen Sprunggelenk</button>
+      <button class="flag knee" data-act="knee" aria-pressed="${!!s.kneeFlag}">Schmerzen Knie</button>
+    </div>`;
+  if (s.stopped) h += `<div class="alert" role="alert">Training wegen Schmerzen im Sprunggelenk beendet. Bitte gib Lele Bescheid und speichere die Einheit am Ende. Versehentlich angetippt? Einfach nochmal auf den roten Knopf tippen.</div>`;
+  if (s.kneeFlag) h += `<div class="notebox">Knieschmerz ist vermerkt, du kannst weitertrainieren. Bewerte ihn am Ende auf der Skala.</div>`;
+  const u = UNITS[s.unit];
+  if (locOf(s) !== 'gym' && (u.pre.length || u.post.length) && (data.prefs.view || 'pages') === 'list')
+    h += `<p class="meta">Die Geräteübungen (${[...u.pre, ...u.post].map(id => EX[id].name).join(', ')}) sind nur im Studio dabei.</p>`;
+  return h;
 }
-const machineRows = (s, id) => s.entries[id].sets.map((_, i) => row(s, id, i, i === 0, `Satz ${i+1}${i===2?' (optional)':''}`)).join('');
 
 function renderSession(s){
-  const u = UNITS[s.unit];
-  let h = `<header class="sess-head"><div class="letter-sm" aria-hidden="true">${s.unit}</div>
-    <div><h1>Einheit ${s.unit}</h1><p class="meta">${fmtDate(s.date)}, ${LOC[locOf(s)]}</p></div></header>
-    <div class="field"><span>Runden im Zirkel</span>${roundsSeg(s.rounds)}</div>`;
-  h += s.stopped
-    ? `<div class="alert" role="alert">Training wegen Schmerzen im Sprunggelenk beendet. Bitte gib Lele Bescheid. Unten kannst du die Einheit trotzdem speichern.</div>`
-    : `<button class="painbtn" data-act="pain">Schmerzen im Sprunggelenk</button>`;
-  h += `<div class="row ${s.warmup ? 'done' : ''}"><div class="top"><span class="name">Aufwärmen</span></div>
-    <div class="ctrl"><span class="meta">5–10 Minuten, z. B. am Rad</span><button class="check" data-act="warmup" aria-pressed="${s.warmup}" aria-label="Aufwärmen erledigt">✓</button></div></div>`;
-  const gym = locOf(s) === 'gym';
-  if (!gym && (u.pre.length || u.post.length)) h += `<p class="meta" style="margin-top:14px">Die Geräteübungen (${[...u.pre, ...u.post].map(id => EX[id].name).join(', ')}) sind nur im Studio dabei. Ob es daheim einen Ersatz gibt, klärst du mit Lele.</p>`;
-  if (gym && u.pre.length) h += group('Am Gerät, zuerst', '2–3 Sätze, dann geht es in den Zirkel', u.pre.map(id => machineRows(s, id)).join(''));
-  for (let r = 0; r < s.rounds; r++){
-    h += group(`Runde ${r+1} von ${s.rounds}`,
-      r === 0 ? 'Alle Übungen einmal hintereinander, 2–3 Min. Pause dazwischen' : 'Nach 2–4 Min. Pause',
-      u.circuit.map(id => row(s, id, r, r === 0, '')).join(''));
+  const mode = data.prefs.view || 'pages';
+  const st = steps(s);
+  let h = sessionHead(s);
+  if (mode === 'list'){
+    let lastGroup = null;
+    st.forEach(step => {
+      if (step.type === 'warmup') h += warmupCard(s, false);
+      else if (step.type === 'ex'){
+        const g = step.machine ? (step.post ? 'post' : 'pre') : 'r' + step.round;
+        if (g !== lastGroup){
+          lastGroup = g;
+          const title = step.machine ? (step.post ? 'Am Gerät, zum Schluss' : 'Am Gerät, zuerst') : `Runde ${step.round+1} von ${s.rounds}`;
+          const sub = step.machine ? '2–3 Sätze' : (step.round === 0 ? 'Alle Übungen einmal hintereinander, 2–3 Min. Pause dazwischen' : 'Nach 2–4 Min. Pause');
+          h += `<section class="group"><h2>${title}</h2><p class="sub">${sub}</p></section>`;
+        }
+        h += exCard(s, step, false);
+      } else h += finishCard(s);
+    });
+    return h;
   }
-  if (gym && u.post.length) h += group('Am Gerät, zum Schluss', '2–3 Sätze extra', u.post.map(id => machineRows(s, id)).join(''));
-
-  const feels = ['gut','mittel','schlecht'], pains = ['keine','leicht','deutlich'];
-  h += `<section class="card"><h2>Einheit abschließen</h2>
-    <div class="field"><span>Tagesverfassung</span><div class="seg">${feels.map(f => `<button data-act="feel" data-v="${f}" aria-pressed="${s.feel===f}">${f}</button>`).join('')}</div></div>
-    <div class="field"><span>Sprunggelenk</span><div class="seg">${pains.map(f => `<button data-act="painlvl" data-v="${f}" aria-pressed="${s.pain===f}">${f}</button>`).join('')}</div></div>
-    ${s.pain === 'deutlich' && !s.stopped ? `<p class="warntext">Bei Schmerzen im Sprunggelenk: aufhören und Lele Bescheid geben.</p>` : ''}
-    <label class="field col"><span>Notiz, z. B. für Lele</span><textarea data-field="note" rows="3">${esc(s.note)}</textarea></label>
-    <button class="btn wide" data-act="finish">Einheit speichern</button>
-    <button class="link danger" data-act="discard">${armed === 'discard' ? 'Wirklich verwerfen? Nochmal tippen.' : 'Einheit verwerfen'}</button>
-  </section>`;
+  // Seitenansicht
+  const p = Math.min(Math.max(s.page || 0, 0), st.length - 1);
+  const step = st[p];
+  h += `<div class="progress"><i style="width:${Math.round(100 * p / (st.length - 1))}%"></i></div>
+    <div class="stepinfo"><span>Schritt ${p+1} von ${st.length}</span><span>${step.type === 'ex' && !step.machine ? `Runde ${step.round+1}/${s.rounds}` : ''}</span></div>`;
+  h += `<div class="page">`;
+  if (step.type === 'warmup') h += warmupCard(s, true);
+  else if (step.type === 'ex') h += exCard(s, step, true);
+  else h += finishCard(s);
+  h += `</div>`;
+  if (step.type !== 'finish'){
+    let primary;
+    if (step.type === 'warmup') primary = `<button class="btn ${s.warmup ? 'okbtn' : ''}" data-act="pagedone">${s.warmup ? 'Erledigt ✓ Weiter' : 'Erledigt & weiter'}</button>`;
+    else if (step.machine) primary = `<button class="btn" data-act="next">Weiter</button>`;
+    else {
+      const done = s.entries[step.id].sets[step.round].done;
+      primary = done ? `<button class="btn okbtn" data-act="next">Erledigt ✓ Weiter</button>` : `<button class="btn" data-act="pagedone">Erledigt & weiter</button>`;
+    }
+    h += `<div class="pagenav"><button class="btn ghost" data-act="prev" ${p === 0 ? 'disabled' : ''}>Zurück</button>${primary}</div>`;
+    if (!step.machine && step.type === 'ex' && s.entries[step.id].sets[step.round].done)
+      h += `<button class="link" data-act="done" data-ex="${step.id}" data-i="${step.round}">Doch nicht erledigt</button>`;
+  } else {
+    h += `<div class="pagenav"><button class="btn ghost" data-act="prev">Zurück</button><span></span></div>`;
+  }
   return h;
 }
 
@@ -490,17 +757,17 @@ function sessionLines(s){
     return `${ex.name}: ${d.map(x => x.reps).join(', ')} ${unitTxt(id)}${isSide(id,e)?' pro Seite':''}${e.load ? `, ${e.load} ${loadUnit(id, e)}` : ''}${e.tool ? `, ${e.tool}` : ''}${e.variant ? ` (${e.variant})` : ''}`;
   }).filter(Boolean);
 }
-const summaryLine = s => `${LOC[locOf(s)]}, ${s.rounds} Runden, Verfassung ${s.feel || '–'}, Sprunggelenk ${s.pain || '–'}${s.stopped ? ', abgebrochen' : ''}`;
+const summaryLine = s => [
+  LOC[locOf(s)], `${s.rounds} Runden`, `Verfassung ${s.feel || '–'}`, `Sprunggelenk ${s.pain || '–'}`,
+  `Knie ${s.painKnee || '–'}`, s.stopped ? 'abgebrochen' : '', s.kneeFlag ? 'Knieschmerz vermerkt' : ''
+].filter(Boolean).join(', ');
 
 function buildExport(){
-  const list = data.sessions.slice(-8);
-  return 'Trainingsprotokoll\n\n' + list.map(s =>
+  return 'Trainingsprotokoll\n\n' + data.sessions.slice(-8).map(s =>
     `${fmtDate(s.date)}, Einheit ${s.unit} (${summaryLine(s)})\n` +
-    sessionLines(s).map(l => '  ' + l).join('\n') +
-    (s.note ? `\n  Notiz: ${s.note}` : '')
+    sessionLines(s).map(l => '  ' + l).join('\n') + (s.note ? `\n  Notiz: ${s.note}` : '')
   ).join('\n\n');
 }
-
 function renderHistory(){
   if (!data.sessions.length){
     return `<div class="empty"><h1>Noch keine Einheiten</h1>
@@ -527,36 +794,82 @@ function renderHistory(){
   return h;
 }
 
-/* ---------- Ereignisse ---------- */
+/* ---------- Aktionen ---------- */
+function goPage(s, p){ s.page = Math.min(Math.max(p, 0), steps(s).length - 1); save(); window.scrollTo(0, 0); }
+function markDone(s, id, i, advance){
+  const set = s.entries[id].sets[i];
+  set.done = true;
+  startRest(restFor(s, id, i));
+  if (advance) goPage(s, s.page + 1); else save();
+}
+
 document.addEventListener('click', e => {
   if (!actx){ try{ actx = new (window.AudioContext || window.webkitAudioContext)(); }catch(_){} }
+  else if (actx.state === 'suspended'){ try{ actx.resume(); }catch(_){} }
   const b = e.target.closest('[data-act]'); if (!b) return;
   const act = b.dataset.act, s = data.active, id = b.dataset.ex, i = +b.dataset.i;
-  const prevArmed = armed;
-  armed = null;
+  const prevArmed = armed; armed = null;
+  const pages = (data.prefs.view || 'pages') === 'pages';
 
   switch (act){
     case 'view': view = b.dataset.v; exportText = null; break;
-    case 'rounds': { const n = +b.dataset.n; if (s) { setRounds(s, n); save(); } else startRounds = n; break; }
-    case 'start':
-      data.active = newSession(b.dataset.unit, startRounds, startLoc); save();
-      window.scrollTo(0, 0); break;
+    case 'mode': data.prefs.view = b.dataset.v; save(); break;
+    case 'rounds': { const n = +b.dataset.n; if (s){ setRounds(s, n); save(); } else startRounds = n; break; }
     case 'loc': startLoc = b.dataset.v; break;
+    case 'start': data.active = newSession(b.dataset.unit, startRounds, startLoc); save(); window.scrollTo(0, 0); break;
+    case 'prev': goPage(s, s.page - 1); break;
+    case 'next': goPage(s, s.page + 1); break;
+    case 'pagedone': {
+      const step = steps(s)[s.page];
+      if (step.type === 'warmup'){ s.warmup = true; if (timer && timer.kind === 'work') stopTimer(); goPage(s, s.page + 1); }
+      else markDone(s, step.id, step.round, true);
+      break;
+    }
     case 'warmup': s.warmup = !s.warmup; save(); break;
+    case 'winc': case 'wdec': s.warmupMin = Math.min(30, Math.max(1, s.warmupMin + (act === 'winc' ? 1 : -1))); save(); break;
+    case 'warmtimer':
+      runTimer([{ sec: s.warmupMin * 60, label:'Aufwärmen' }], 'work', () => {
+        if (!data.active) return; data.active.warmup = true; save();
+        startRest(null); setStatus('Aufwärmen geschafft.');
+        if ((data.prefs.view || 'pages') === 'pages' && steps(data.active)[data.active.page].type === 'warmup') goPage(data.active, data.active.page + 1);
+        render();
+      });
+      return;
+    case 'worktimer': {
+      const sec = s.entries[id].sets[i].reps;
+      runTimer([{ sec, label:'Linkes Bein' }, { sec, label:'Rechtes Bein' }], 'work', () => {
+        const a = data.active; if (!a) return;
+        const onPage = (data.prefs.view || 'pages') === 'pages';
+        const step = steps(a)[a.page];
+        const advance = onPage && step.type === 'ex' && step.id === id && step.round === i;
+        markDone(a, id, i, advance); render();
+      });
+      return;
+    }
     case 'inc': case 'dec': {
       const set = s.entries[id].sets[i], step = EX[id].time ? 5 : 1;
       set.reps = Math.max(0, set.reps + (act === 'inc' ? step : -step)); save(); break;
     }
+    case 'linc': case 'ldec': {
+      const en = s.entries[id], cur = parseNum(en.load) ?? 0;
+      en.load = fmtNum(Math.max(0, cur + (act === 'linc' ? 1 : -1))); save(); break;
+    }
     case 'done': {
-      const set = s.entries[id].sets[i]; set.done = !set.done;
-      if (set.done){ const r = restFor(s, id, i); if (r) startTimer(r); else { stopTimer(); setStatus('Letzte Runde geschafft. Unten kannst du die Einheit abschließen.'); } }
-      save(); break;
+      const set = s.entries[id].sets[i];
+      if (set.done){ set.done = false; save(); }
+      else markDone(s, id, i, false);
+      break;
     }
     case 'pain':
-      s.stopped = true; s.pain = 'deutlich'; stopTimer(); save(); window.scrollTo(0, 0); break;
-    case 'feel': s.feel = b.dataset.v; save(); break;
-    case 'painlvl': s.pain = b.dataset.v; save(); break;
+      s.stopped = !s.stopped;
+      if (s.stopped){ stopTimer(); if (pages) s.page = steps(s).length - 1; }
+      save(); window.scrollTo(0, 0); break;
+    case 'knee': s.kneeFlag = !s.kneeFlag; save(); break;
+    case 'feel': s.feel = s.feel === b.dataset.v ? '' : b.dataset.v; save(); break;
+    case 'painlvl': s.pain = s.pain === b.dataset.v ? '' : b.dataset.v; save(); break;
+    case 'kneelvl': s.painKnee = s.painKnee === b.dataset.v ? '' : b.dataset.v; save(); break;
     case 'finish':
+      delete s.page;
       data.sessions.push(s); data.active = null; startRounds = s.rounds; startLoc = locOf(s); stopTimer(); save();
       setStatus(`Einheit ${s.unit} gespeichert.`); window.scrollTo(0, 0); break;
     case 'discard':
@@ -594,14 +907,22 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   if (e.target.id === 'restoreFile'){ const file = e.target.files && e.target.files[0]; if (file) importBackup(file); e.target.value = ''; return; }
   const f = e.target.dataset.field, s = data.active; if (!f || !s) return;
-  if (f === 'variant'){ s.entries[e.target.dataset.ex].variant = e.target.value; save(); render(); }
-  if (f === 'tool'){ s.entries[e.target.dataset.ex].tool = e.target.value; save(); render(); }
-  if (f === 'load') render();
+  const en = s.entries[e.target.dataset.ex];
+  if (f === 'variant') en.variant = e.target.value;
+  if (f === 'tool') en.tool = e.target.value;
+  if (f === 'mod'){
+    const set = new Set(en.mods || []);
+    e.target.checked ? set.add(e.target.value) : set.delete(e.target.value);
+    en.mods = EX.stand.mods.filter(m => set.has(m));
+    en.variant = standVariant(en.mods);
+  }
+  save(); render();
 });
 document.addEventListener('toggle', e => {
   const d = e.target; if (!d.dataset || !d.dataset.id) return;
   d.open ? openIds.add(d.dataset.id) : openIds.delete(d.dataset.id);
 }, true);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && timer){ updTimer(); if (timer) keepAwake(true); } });
 
 (async () => {
   await loadData();
