@@ -200,13 +200,13 @@ const EX = {
     how:'Band knapp über den Knien, Füße etwa schulterbreit. Gewicht nah vor der Brust halten, Hüfte nach hinten schieben, als würdest du dich auf einen Stuhl setzen, dann wieder aufstehen.',
     cues:['Knie aktiv gegen das Band nach außen drücken, sie zeigen über die Zehen','Fersen bleiben am Boden','Oberkörper aufrecht, Gewicht bleibt nah am Körper','So tief, wie es sauber und schmerzfrei geht'],
     feel:'Vordere Oberschenkel und Gesäß, durch das Band auch seitlich am Gesäß',
-    videos:[{t:'Squat mit Miniband um die Knie', u:'https://us.physitrack.com/home-exercise-video/squat-with-mini-band-around-knees'},
+    videos:[{t:'Squat mit Band um die Oberschenkel', u:'https://sweat.com/exercises/squat-with-band', src:'Sweat'},
             {t:'Goblet-Squat: Gewicht vor der Brust', u:'https://us.physitrack.com/home-exercise-video/goblet-squat---weights'}] },
   rdl: { tools:true, name:'RDL', hint:'Kreuzheben mit gestreckten Beinen', load:'kg', perSideWith:['Kurzhantel'], defLoad:'4', defTool:'Kurzhantel', home:{ load:'10', tool:'Kettlebell' },
     how:'Hüftbreit stehen, Knie leicht gebeugt und so lassen. Hüfte nach hinten schieben und den Oberkörper nach vorne neigen, das Gewicht gleitet nah an den Beinen nach unten. Dann Hüfte nach vorne schieben und aufrichten.',
     cues:['Rücken bleibt gerade, kein Rundrücken','Die Bewegung kommt aus der Hüfte, nicht aus den Knien','Nur so tief, wie der Rücken gerade bleibt, meist etwa bis unters Knie','Oben Gesäß anspannen, nicht ins Hohlkreuz lehnen'],
     feel:'Rückseite der Oberschenkel und Gesäß, nicht im unteren Rücken',
-    videos:[{t:'Kreuzheben mit gestreckten Beinen, Kettlebell', u:'https://us.physitrack.com/home-exercise-video/kettlebell-stiff-leg-deadlift'}] },
+    videos:[{t:'RDL mit Kettlebell, beidbeinig', u:'https://sweat.com/exercises/romanian-kettlebell-deadlift', src:'Sweat'}] },
   calf: { tools:true, name:'Wadenheben', load:'kg', variants:['beidbeinig','beidbeinig hoch, einbeinig runter','einbeinig'],
     how:'Aufrecht stehen, mit einer Hand an der Wand festhalten. Langsam auf die Zehenballen hochdrücken, oben kurz halten und in 2–3 Sekunden wieder absenken.',
     cues:['Ganz nach oben kommen, die ganze Bewegung nutzen','Gewicht über Großzehe und zweiter Zehe, das Sprunggelenk kippt nicht nach außen','Absenken langsamer als hochdrücken','Knie gestreckt, aber nicht durchgedrückt'],
@@ -249,7 +249,7 @@ const EX = {
     cues:['Oben Gesäß fest anspannen, nicht ins Hohlkreuz drücken','Knie bleiben hüftbreit','Einbeinig: Becken bleibt waagrecht und kippt nicht ab'],
     feel:'Gesäß und Rückseite der Oberschenkel, nicht im unteren Rücken',
     videosBy:{
-      'beidbeinig':[{t:'Bridge beidbeinig', u:'https://us.physitrack.com/home-exercise-video/glute-bridge-on-floor'}],
+      'beidbeinig':[{t:'Bridge beidbeinig', u:'https://sweat.com/exercises/glute-bridge', src:'Sweat'}],
       'einbeinig':[{t:'Bridge einbeinig', u:'https://us.physitrack.com/home-exercise-video/single-leg-glute-bridge'}] } },
   lateral: { tools:true, name:'Seitheben', hint:'Arme seitlich heben', load:'kg', defLoad:'3', defTool:'Kurzhantel',
     how:'Aufrecht stehen, Hanteln seitlich neben dem Körper. Arme mit leicht gebeugten Ellbogen seitlich bis auf Schulterhöhe heben und langsam wieder senken.',
@@ -262,6 +262,7 @@ const EX = {
     feel:'Vordere Oberschenkel',
     videos:[{t:'Knee Extension am Gerät', u:'https://us.physitrack.com/home-exercise-video/knee-extension---machine---version-2'}] }
 };
+const YT = {"legpress": "Beinpresse richtig ausführen", "squat": "Squat mit Miniband Knie Anleitung", "rdl": "Rumänisches Kreuzheben Kettlebell Anleitung", "calf": "Wadenheben richtig ausführen", "pallof": "Pallof Press Band Anleitung", "foot": "Fuß Eversion Theraband Übung", "stand": "Einbeinstand Gleichgewicht Übung", "legcurl": "Beinbeuger Maschine richtig", "lunge": "Ausfallschritt nach vorne richtig", "bridge": "Glute Bridge richtig ausführen", "lateral": "Seitheben Kurzhantel richtig", "kneeext": "Beinstrecker Maschine richtig"};
 const WARMUP = { how:'Locker treten mit leichtem Widerstand, sodass du dich noch gut unterhalten könntest. Gegen Ende darf es etwas zügiger werden.', feel:'Beine warm, Puls leicht erhöht' };
 const UNITS = {
   A: { pre:['legpress'], circuit:['squat','rdl','calf','pallof','foot','stand'], post:['legcurl'] },
@@ -553,12 +554,12 @@ function videosFor(id, e){
 }
 function infoBlock(id, e, open){
   const ex = EX[id];
-  const vids = videosFor(id, e).map(v => `<a class="vid" href="${v.u}" target="_blank" rel="noopener"><span class="play">▶</span><span>${esc(v.t)}<span class="meta">Video bei ${PT}, auf Englisch</span></span></a>`).join('');
+  const vids = videosFor(id, e).map(v => `<a class="vid" href="${v.u}" target="_blank" rel="noopener"><span class="play">▶</span><span>${esc(v.t)}<span class="meta">Video bei ${v.src || PT}, auf Englisch</span></span></a>`).join('');
   return `<details class="info" ${open ? 'open' : ''}><summary>Ausführung, worauf achten, Video</summary>
     <p>${esc(ex.how)}</p>
     <h3>Worauf achten</h3><ul>${ex.cues.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
     <h3>Spüren solltest du es</h3><p>${esc(ex.feel)}</p>
-    <div class="vids">${vids}</div>
+    <div class="vids">${vids}<a class="vid" href="https://www.youtube.com/results?search_query=${encodeURIComponent(YT[id])}" target="_blank" rel="noopener"><span class="play">⌕</span><span>Weitere Videos auf YouTube suchen<span class="meta">Suche: ${esc(YT[id])}</span></span></a></div>
     <p class="meta">Allgemeine Hinweise. Wenn Lele dir etwas anderes gesagt hat, gilt ihre Anleitung.</p>
   </details>`;
 }
@@ -743,6 +744,7 @@ function renderSession(s){
     h += `<div class="pagenav"><button class="btn ghost" data-act="prev" ${p === 0 ? 'disabled' : ''}>Zurück</button>${primary}</div>`;
     if (!step.machine && step.type === 'ex' && s.entries[step.id].sets[step.round].done)
       h += `<button class="link" data-act="done" data-ex="${step.id}" data-i="${step.round}">Doch nicht erledigt</button>`;
+    h += `<button class="link danger" data-act="discard">${armed === 'discard' ? 'Wirklich verwerfen? Nochmal tippen.' : 'Einheit verwerfen'}</button>`;
   } else {
     h += `<div class="pagenav"><button class="btn ghost" data-act="prev">Zurück</button><span></span></div>`;
   }
